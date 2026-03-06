@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
-#include "Manager.h"
-#include "CoreFunctions.h"
+#include "manager.h"
+#include "core_functions.h"
 void startGame() {
 	std::string initialName;
 	std::cout << "Welcome to FunGame!!!" << std::endl;
@@ -72,3 +72,4 @@ int main(int argc, char *argv[], char *envp[]) {
     startGame();
     return 0;
 }
+
