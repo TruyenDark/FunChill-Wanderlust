@@ -1,3 +1,8 @@
+/*
+ * Module: arm64-Output.S
+ * Function: arm64_printFMT
+ * Description: Low-level formatted output for ARM64 using raw syscalls.
+ */
 .section .bss, "aw", @nobits
     .balign 64
     .type buffer, %object
@@ -12,13 +17,13 @@ exp:
     .size exp, .-exp
 .section .text, "ax", @progbits
     .balign 64
-    .global mainPrint
+    .global arm64_printFMT
     .global plugin_string
     .global plugin_u64
-    .type mainPrint, %function
+    .type arm64_printFMT, %function
     .type plugin_string, %function
     .type plugin_u64, %function
-mainPrint:
+arm64_printFMT:
     stp x29, x30, [sp, #-160]!
     stp x19, x20, [sp, #16]
     stp x1, x2, [sp, #32]
