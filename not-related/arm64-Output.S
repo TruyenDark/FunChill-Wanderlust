@@ -69,7 +69,7 @@ endFunc:
     ldp x29, x30, [sp], #16
     ldp x19, x20, [sp], #144
     ret
-    .size mainPrint, .-mainPrint
+    .size arm64_printFMT, .-arm64_printFMT
 
 plugin_string:
     stp x29, x30, [sp, #-16]!
