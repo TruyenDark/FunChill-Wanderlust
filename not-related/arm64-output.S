@@ -36,7 +36,7 @@ arm64_print:
     add x29, sp, #88
     mov x19, x0
     add x20, sp, #32
-loopMain:
+format_string_processing:
     ldrb w9, [x19], #1
     cbz w9, endFunc
     subs wzr, w9, #'%'
@@ -46,7 +46,7 @@ loopMain:
     movz x2, #1
     movz x8, #64
     svc #0
-    b loopMain
+    b format_string_processing
 format_handling:
     ldrb w9, [x19], #1
     subs wzr, w9, #'s'
@@ -59,13 +59,13 @@ format_handling:
     movz x2, #1
     movz x8, #64
     svc #0
-    b loopMain
+    b format_string_processing
 string:
     subs xzr, x20, x29
     beq exception_0
     ldr x0, [x20], #8
     bl string_plugin
-    b loopMain
+    b format_string_processing
 exception_0:
     add x20, x20, #8
     b string
@@ -74,7 +74,7 @@ decimal:
     beq exception_1
     ldr x0, [x20], #8
     bl unsigned_decimal_utility
-    b loopMain
+    b format_string_processing
 exception_1:
     add x20, x20, #8
     b decimal
