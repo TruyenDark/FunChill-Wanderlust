@@ -87,9 +87,9 @@ end_output:
 string_plugin:
     stp x29, x30, [sp, #-16]!
     mov x1, x0
-loop:
+string_processing:
     ldrb w9, [x0], #1
-    cbnz w9, loop
+    cbnz w9, string_processing
     sub x2, x0, x1
     sub x2, x2, #1
     movz x0, #1
