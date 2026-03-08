@@ -1,7 +1,35 @@
 /*
- * Module: arm64-output.S
- * Function: arm64_print
- * Description: Low-level formatted output for ARM64 using raw syscalls.
+ * arm64-output.S - Low-level formatted output for ARM64
+ *
+ * Copyright (C) 2025-2026 truyen@localhost
+ * Part of the FunChill-Wanderlust Project
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
+ * @file arm64-output.S
+ * @brief ARM64 Variadic Print Implementation using raw Linux Syscalls.
+ * * This module provides a standalone formatted output utility optimized
+ * for Termux environments, avoiding dependencies on standard C libraries.
+ * It features a stack-aware pointer logic to handle 16-byte alignment
+ * constraints on the ARM64 architecture. 
+ *
+ * Architecture: ARM64 (AArch64) 
+ * Syscall Interface: Linux Write (64) 
+ * * @author truyen@localhost
+ * @date 2026-03-08
  */
 
 .section .bss, "aw", @nobits
