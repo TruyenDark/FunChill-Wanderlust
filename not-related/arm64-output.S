@@ -17,7 +17,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 /**
  * @file arm64-output.S
  * @brief ARM64 Variadic Print Implementation using raw Linux Syscalls.
@@ -31,24 +30,20 @@
  * * @author truyen@localhost
  * @date 2026-03-08
  */
-
-#ifndef ARM64_OUTPUT_S
-#define ARM64_OUTPUT_S
-
+#ifndef ARM64__OUTPUT__S
+#define ARM64__OUTPUT__S
 .section .bss, "aw", @nobits
     .balign 64
     .type buffer, %object
 buffer:
     .skip 24
     .size buffer, .-buffer
-
 .section .data, "aw", @progbits
     .balign 64
     .type percent_format, %object
 percent_format:
     .ascii "%"
     .size percent_format, .-percent_format
-
 .section .text, "ax", @progbits
     .balign 64
     .global arm64_print
@@ -114,7 +109,6 @@ end_output:
     ldp x19, x20, [sp], #80
     ret
     .size arm64_print, .-arm64_print
-
 string_plugin:
     stp x29, x30, [sp, #-16]!
     mov x1, x0
@@ -129,7 +123,6 @@ string_processing:
     ldp x29, x30, [sp], #16
     ret
     .size string_plugin, .-string_plugin
-
 unsigned_decimal_utility:
     stp x29, x30, [sp, #-48]!
     stp x19, x20, [sp, #16]
