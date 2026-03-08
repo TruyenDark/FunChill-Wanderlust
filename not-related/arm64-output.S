@@ -38,7 +38,7 @@ arm64_print:
     add x20, sp, #32
 format_string_processing:
     ldrb w9, [x19], #1
-    cbz w9, endFunc
+    cbz w9, end_output
     subs wzr, w9, #'%'
     beq format_handling
     movz x0, #1
@@ -78,7 +78,7 @@ decimal:
 exception_1:
     add x20, x20, #8
     b decimal
-endFunc:
+end_output:
     ldp x29, x30, [sp], #16
     ldp x19, x20, [sp], #144
     ret
