@@ -34,10 +34,10 @@
 #ifndef ARM64__OUTPUT__S
 #define ARM64__OUTPUT__S
 #ifndef __ANDROID__
-# error
+# error Architecture not supported
 #endif
 #ifndef __aarch64__
-# error
+# error Architecture not supported
 #endif
 .section .bss, "aw", @nobits
     .balign 64
