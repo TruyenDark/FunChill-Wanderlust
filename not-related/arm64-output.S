@@ -110,23 +110,23 @@ unsigned_decimal_utility:
     mov x19, x0
     mov x20, #10
     mov x22, xzr
-u64_loop:
+unsigned_decimal_processing:
     udiv x9, x19, x20
     msub x10, x9, x20, x19
     mov x19, x9
     add w10, w10, #48
     strb w10, [x21]
     add x22, x22, #1
-    cbz x19, u64_print
+    cbz x19, unsigned_decimal_output
     sub x21, x21, #1
-    b u64_loop
-u64_print:
+    b unsigned_decimal_processing
+unsigned_decimal_output:
     mov x0, #1
     mov x1, x21
     mov x2, x22
     mov x8, #64
     svc #0
-u64_done:
+end_of_decimal_label_without_sign:
     ldp x21, x22, [sp, #32]
     ldp x19, x20, [sp, #16]
     ldp x29, x30, [sp], #48
