@@ -1,6 +1,6 @@
 /*
- * Module: arm64-Output.S
- * Function: arm64_printFMT
+ * Module: arm64-output.S
+ * Function: arm64_print
  * Description: Low-level formatted output for ARM64 using raw syscalls.
  */
 .section .bss, "aw", @nobits
