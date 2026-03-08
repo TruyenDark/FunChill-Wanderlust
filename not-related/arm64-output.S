@@ -32,6 +32,9 @@
  * @date 2026-03-08
  */
 
+#ifndef ARM64_OUTPUT_S
+#define ARM64_OUTPUT_S
+
 .section .bss, "aw", @nobits
     .balign 64
     .type buffer, %object
@@ -160,3 +163,4 @@ end_of_decimal_label_without_sign:
     ldp x29, x30, [sp], #48
     ret
     .size unsigned_decimal_utility, .-unsigned_decimal_utility
+#endif
