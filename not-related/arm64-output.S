@@ -13,10 +13,10 @@ buffer:
 
 .section .data, "aw", @progbits
     .balign 64
-    .type exp, %object
-exp:
+    .type percent_format, %object
+percent_format:
     .ascii "%"
-    .size exp, .-exp
+    .size percent_format, .-percent_format
 
 .section .text, "ax", @progbits
     .balign 64
@@ -27,7 +27,7 @@ exp:
     .type string_plugin, %function
     .type unsigned_decimal_utility, %function
 arm64_print:
-    stp x29, x30, [sp, #-160]!
+    stp x29, x30, [sp, #-96]!
     stp x19, x20, [sp, #16]
     stp x1, x2, [sp, #32]
     stp x3, x4, [sp, #48]
@@ -54,8 +54,8 @@ format_handling:
     subs wzr, w9, #'d'
     beq decimal
     movz x0, #1
-    adrp x1, exp
-    add x1, x1, #:lo12:exp
+    adrp x1, percent_format
+    add x1, x1, #:lo12:percent_format
     movz x2, #1
     movz x8, #64
     svc #0
@@ -80,7 +80,7 @@ exception_1:
     b decimal
 end_output:
     ldp x29, x30, [sp], #16
-    ldp x19, x20, [sp], #144
+    ldp x19, x20, [sp], #80
     ret
     .size arm64_print, .-arm64_print
 
