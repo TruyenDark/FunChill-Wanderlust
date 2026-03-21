@@ -17,40 +17,63 @@ inline void clearConsole() {
     #endif
 }
 inline void saveGame(Player &player, bool inspectLargeShips) {
-    std::ofstream file("saveGame.txt");
+    std::ofstream file("save_data.bin", std::ios::out | std::ios::binary);
     if (file.is_open()) {
-        file << player.returnsName() << "\n";
-        file << player.returnsHealth() << "\n";
-        file << player.returnToMaximumHealth() << "\n";
-        file << player.returnsDamage() << "\n";
-        file << player.returnsMoney() << "\n";
-        file << inspectLargeShips << "\n";
-        file.close();
+        std::string name = player.returnsName();
+        size_t lenName = name.size();
+        int health = player.returnsHealth();
+        int maxHealth = player.returnToMaximumHealth();
+        int damage = player.returnsDamage();
+        int money = player.returnsMoney();
+        bool iLS = inspectLargeShips;
+        /*------- WRITE -------*/
+        file.write((char*)&lenName, sizeof(lenName));
+        file.write(name.c_str(), lenName);
+        file.write((char*)&health, sizeof(health));
+        file.write((char*)&maxHealth, sizeof(maxHealth));
+        file.write((char*)&damage, sizeof(damage));
+        file.write((char*)&money, sizeof(money));
+        file.write((char*)&iLS, sizeof(iLS));
         std::cout << "Game saved successfully!" << std::endl;
     }
 }
 
 inline void loadGame(Player &player, bool &inspectLargeShips) {
-    std::ifstream file("saveGame.txt");
-    if (file.is_open()) {
-        std::string name;
-        int health, maxHealth, damage, money;
-        bool shipFlag;
-
-        if (file >> name >> health >> maxHealth >> damage >> money >> shipFlag) {
-            player.setName(name);
-            player.settingMaximumHealth(maxHealth);
-            player.healthSetting(health);
-            player.setDamage(damage);
-            player.moneySetting(money);
-            inspectLargeShips = shipFlag;
-
-            std::cout << "Game loaded! Welcome back, " << name << "." << std::endl;
-        }
-        file.close();
-    } else {
-        std::cout << "No save file found!" << std::endl;
-    }
+	try {
+    	std::ifstream file("save_data.bin", std::ios::in | std::ios::binary);
+    	size_t lenName;
+    	char* pName = nullptr;
+    	int health = 0, maxHealth = 0, damage = 0, money = 0;
+    	bool iLS;
+    	if (file.is_open()) {
+    		/*------- READ -------*/
+    		file.read((char*)&lenName, sizeof(lenName));
+    		pName = new char[lenName + 1];
+    		file.read(pName, lenName);
+    		*((char*)(pName + lenName)) = 0x00;
+    		std::string name(pName, lenName);
+    		delete[] pName;
+    		file.read((char*)&health, sizeof(health));
+    		file.read((char*)&maxHealth, sizeof(maxHealth));
+    		file.read((char*)&damage, sizeof(damage));
+    		file.read((char*)&money, sizeof(money));
+    		file.read((char*)&iLS, sizeof(iLS));
+    		std::cout << "Game loaded! Welcome back, " << name << "." << std::endl;
+    		player.setName(name);
+    		player.healthSetting(health);
+    		player.settingMaximumHealth(maxHealth);
+    		player.setDamage(damage);
+    		player.moneySetting(money);
+    		inspectLargeShips = iLS;
+     	   file.close();
+    	} else {
+        	std::cout << "No save file found!" << std::endl;
+    	}
+	} catch (const std::bad_alloc& error) {
+		std::cout << "Error: Save file is corrupted (Too large)! Loading default stats... >> " << error.what() << std::endl;
+	} catch (...) {
+		std::cout << "Error: Something went wrong while loading. Let's start over!" << std::endl;
+	}
 }
 inline void changePlayerName(Player &player) {
     std::string newName;
@@ -323,8 +346,8 @@ void startGame() {
     Player steve(initialName, 100, 1, 0, 100);
     static bool inspectLargeShips = true;
     while (true) {
-    	if (steve.returnToMaximumHealth() > 999999999 || steve.returnsDamage() > 999999999) {
-    		std::cout << "\n\033[1;31m[!] The system detects code modification and tampering in the game!\033[0m" << std::endl;
+    	if (steve.returnToMaximumHealth() > 999999999 || steve.returnsDamage() > 999999999 || steve.returnsMoney() > 999999999 || steve.returnsHealth() > 999999999) {
+    		std::cout << "\n[!] The system detects code modification and tampering in the game!" << std::endl;
     		std::this_thread::sleep_for(std::chrono::seconds(3));
     		exit(1);
     	}
@@ -342,7 +365,20 @@ void startGame() {
         std::cin >> select;
 		if (select == "E" || select == "e" || select == "Exit")
         {
-            break;
+        	while(true) {
+        		std::string select;
+        		std::cout << "Do you really want to quit the game? ( Y/n )" << std::endl;
+        		std::cout << "Enter a number or letter to select: " << std::endl;
+        		std::cin >> select;
+        		if (select == "Y" || select == "y") {
+					saveGame(steve, inspectLargeShips);
+        	    	exit(0);
+          	  }
+        	    else if (select == "N" || select == "n") {
+            		break;
+          	  }
+          	  else { std::cout << "Error, please re-enter!" << std::endl;}
+			}
         }
         else if (select == "SG" || select == "sg") {
         	saveGame(steve, inspectLargeShips);
