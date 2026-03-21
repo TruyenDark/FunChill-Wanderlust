@@ -10,9 +10,9 @@ class Entity
 		int damage;
 		int price;
 	public:
-		Entity(const std::string &_name, int _health, int _damage, int _price) : name(_name), health(_health), damage(_damage), price(_price) {}
+		Entity(const std::string& _name, int _health, int _damage, int _price) : name(_name), health(_health), damage(_damage), price(_price) {}
 		/* Return method */
-		std::string returnsName() const { return name; }
+		const std::string& returnsName() const { return name; }
 		int returnsHealth() const { return health; }
 		int returnsDamage() const { return damage; }
 		int returnsPrice() const { return price; }
@@ -36,8 +36,8 @@ class Player : public Entity
 		int money;
 		int maximumHealth;
 	public:
-		Player(const std::string &_name, int _health, int _damage, int _price, int _money) : Entity(_name, _health, _damage, _price), money(_money), maximumHealth(_health) {}
-		void entityIsDead(Entity &entity) { if (entity.returnsHealth() <= 0) { money += entity.returnsPrice(); }}
+		Player(const std::string& _name, int _health, int _damage, int _price, int _money) : Entity(_name, _health, _damage, _price), money(_money), maximumHealth(_health) {}
+		void entityIsDead(Entity& entity) { if (entity.returnsHealth() <= 0) { money += entity.returnsPrice(); }}
 		/* Return method */
 		int returnsMoney() const { return money; }
 		int returnToMaximumHealth() const { return maximumHealth; }
